@@ -1,0 +1,500 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212;
+    color: #EAEAEA;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+/* Container and Layout */
+.container {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 30px;
+}
+
+.main-content {
+    flex: 0 0 70%;
+    padding-right: 20px;
+}
+
+.sidebar {
+    flex: 0 0 30%;
+    padding-left: 20px;
+}
+
+/* Typography */
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #4a90e2;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 500;
+    color: #4a90e2;
+    margin: 40px 0 20px 0;
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+}
+
+h3 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #27ae60;
+    margin: 30px 0 15px 0;
+}
+
+h4 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #EAEAEA;
+    margin: 15px 0 10px 0;
+}
+
+p {
+    margin-bottom: 15px;
+    color: #CCCCCC;
+}
+
+/* Links */
+a {
+    color: #4a90e2;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #5ba0f2;
+    text-decoration: underline;
+}
+
+/* Main Content Sections */
+.intro-section {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.project-image {
+    width: 100%;
+    max-width: 600px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin: 20px 0;
+    border: 2px solid #333;
+}
+
+.project-description {
+    text-align: left;
+    font-size: 1.1rem;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    border-left: 4px solid #4a90e2;
+}
+
+/* Prerequisites Section */
+.prerequisites-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.prerequisites-list li {
+    margin: 10px 0;
+    padding: 10px 15px;
+    background-color: #1a1a1a;
+    border-radius: 5px;
+    border-left: 3px solid #27ae60;
+    position: relative;
+}
+
+.prerequisites-list li::before {
+    content: "✓";
+    color: #27ae60;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Table of Contents */
+.toc-list {
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+.toc-list li {
+    margin: 8px 0;
+    padding: 5px 0;
+}
+
+.toc-list a {
+    color: #4a90e2;
+    font-weight: 500;
+}
+
+/* Code Sections */
+.implementation-section {
+    margin: 40px 0;
+}
+
+.code-subsection {
+    margin: 30px 0;
+}
+
+.code-block {
+    background-color: #0d1117;
+    color: #c9d1d9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 15px 0;
+}
+
+.code-explanation {
+    background-color: #1a1a1a;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #27ae60;
+    margin-top: 15px;
+    font-style: italic;
+}
+
+/* Buttons */
+.button-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.btn {
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background-color: #4a90e2;
+    color: white;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+}
+
+.btn-primary:hover {
+    background-color: #5ba0f2;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+    text-decoration: none;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: #4a90e2;
+    border: 2px solid #4a90e2;
+}
+
+.btn-secondary:hover {
+    background-color: #4a90e2;
+    color: white;
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+/* Project Cards */
+.project-cards {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.project-card {
+    flex: 1;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid #333;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.card-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #333;
+}
+
+.card-description {
+    font-size: 14px;
+    margin: 10px 0 15px 0;
+    color: #BBBBBB;
+}
+
+.card-link {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #27ae60;
+    color: white;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.card-link:hover {
+    background-color: #2ecc71;
+    text-decoration: none;
+    color: white;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    padding: 25px;
+    height: fit-content;
+    border: 1px solid #333;
+}
+
+.sidebar section {
+    margin-bottom: 30px;
+}
+
+.sidebar h3 {
+    color: #4a90e2;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 8px;
+}
+
+.about-text {
+    font-size: 14px;
+    color: #BBBBBB;
+}
+
+/* Advertisement Placeholders */
+.ads-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ad-placeholder {
+    background-color: #2a2a2a;
+    border: 2px dashed #555;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.ad-large {
+    width: 100%;
+    height: 250px;
+}
+
+.ad-tall {
+    width: 100%;
+    height: 400px;
+}
+
+.ad-small {
+    width: 100%;
+    height: 100px;
+}
+
+/* Related Topics */
+.related-list {
+    list-style: none;
+    padding: 0;
+}
+
+.related-list li {
+    margin: 10px 0;
+    padding: 8px 0;
+    border-bottom: 1px solid #333;
+}
+
+.related-list li:last-child {
+    border-bottom: none;
+}
+
+.related-list a {
+    color: #BBBBBB;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.related-list a:hover {
+    color: #4a90e2;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        padding: 15px;
+        gap: 20px;
+    }
+    
+    .main-content,
+    .sidebar {
+        flex: none;
+        padding: 0;
+        width: 100%;
+    }
+    
+    .sidebar {
+        order: 2;
+    }
+    
+    .main-content {
+        order: 1;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    h3 {
+        font-size: 1.2rem;
+    }
+    
+    .project-image {
+        height: 200px;
+    }
+    
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .btn {
+        width: 200px;
+        text-align: center;
+    }
+    
+    .project-cards {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .code-block {
+        font-size: 12px;
+        padding: 15px;
+    }
+    
+    .ad-large,
+    .ad-tall {
+        height: 200px;
+    }
+    
+    .ad-small {
+        height: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .project-description {
+        padding: 15px;
+        font-size: 1rem;
+    }
+    
+    .sidebar {
+        padding: 20px;
+    }
+    
+    .btn {
+        padding: 12px 25px;
+        font-size: 12px;
+    }
+    
+    .code-block {
+        font-size: 11px;
+        padding: 10px;
+    }
+}
+
+/* Smooth scrolling for anchor links */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Focus styles for accessibility */
+a:focus,
+.btn:focus {
+    outline: 2px solid #4a90e2;
+    outline-offset: 2px;
+}
+
+/* Additional animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.intro-section,
+.prerequisites-section,
+.toc-section,
+.implementation-section,
+.conclusion-section,
+.demo-source-section,
+.other-projects-section {
+    animation: fadeIn 0.6s ease-out;
+}
