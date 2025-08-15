@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Code - AI Powered Development</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-magic"></i>
+                    <span>VibeCode</span>
+                </div>
+                <nav class="nav">
+                    <button class="nav-btn active">Editor</button>
+                    <button class="nav-btn">Deploy</button>
+                    <button class="nav-btn">Share</button>
+                </nav>
+                <div class="header-actions">
+                    <button class="btn-secondary">
+                        <i class="fas fa-users"></i>
+                        Collaborate
+                    </button>
+                    <button class="btn-primary">
+                        <i class="fas fa-rocket"></i>
+                        Deploy
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3>Project Files</h3>
+                    <div class="file-tree">
+                        <div class="file-item active">
+                            <i class="fas fa-file-code"></i>
+                            <span>index.html</span>
+                        </div>
+                        <div class="file-item">
+                            <i class="fas fa-file-code"></i>
+                            <span>styles.css</span>
+                        </div>
+                        <div class="file-item">
+                            <i class="fas fa-file-code"></i>
+                            <span>script.js</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>AI Suggestions</h3>
+                    <div class="ai-suggestions">
+                        <div class="suggestion-item">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Add responsive design</span>
+                        </div>
+                        <div class="suggestion-item">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Improve accessibility</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Editor Area -->
+            <div class="editor-container">
+                <!-- Vibe Input -->
+                <div class="vibe-input-section">
+                    <div class="vibe-header">
+                        <h2>Describe your app in natural language</h2>
+                        <p>Tell me what you want to build, and I'll generate the code for you!</p>
+                    </div>
+                    <div class="vibe-input-container">
+                        <textarea 
+                            id="vibeInput" 
+                            placeholder="e.g., 'Create a todo app with add, delete, and mark complete functionality. Make it look modern with a dark theme.'"
+                            rows="4"
+                        ></textarea>
+                        <button id="generateBtn" class="generate-btn">
+                            <i class="fas fa-magic"></i>
+                            Generate Code
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Code Editor -->
+                <div class="code-editor-section">
+                    <div class="editor-tabs">
+                        <div class="tab active" data-file="html">
+                            <i class="fab fa-html5"></i>
+                            HTML
+                        </div>
+                        <div class="tab" data-file="css">
+                            <i class="fab fa-css3-alt"></i>
+                            CSS
+                        </div>
+                        <div class="tab" data-file="js">
+                            <i class="fab fa-js-square"></i>
+                            JavaScript
+                        </div>
+                    </div>
+                    <div class="editor-content">
+                        <div id="htmlEditor" class="editor active">
+                            <pre><code id="htmlCode"><!-- Your HTML code will appear here --></code></pre>
+                        </div>
+                        <div id="cssEditor" class="editor">
+                            <pre><code id="cssCode">/* Your CSS code will appear here */</code></pre>
+                        </div>
+                        <div id="jsEditor" class="editor">
+                            <pre><code id="jsCode">// Your JavaScript code will appear here</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Panel -->
+            <div class="preview-panel">
+                <div class="preview-header">
+                    <h3>Live Preview</h3>
+                    <div class="preview-controls">
+                        <button class="preview-btn" title="Refresh">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button class="preview-btn" title="Open in new tab">
+                            <i class="fas fa-external-link-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="preview-content">
+                    <iframe id="preview" src="about:blank"></iframe>
+                </div>
+                <div class="preview-url">
+                    <span>Preview URL: </span>
+                    <a href="#" id="previewUrl">https://vibeapp-abc123.vibeCode.app</a>
+                </div>
+            </div>
+        </main>
+
+        <!-- Status Bar -->
+        <footer class="status-bar">
+            <div class="status-left">
+                <span class="status-item">
+                    <i class="fas fa-circle text-green"></i>
+                    Ready
+                </span>
+                <span class="status-item">
+                    <i class="fas fa-users"></i>
+                    2 collaborators online
+                </span>
+            </div>
+            <div class="status-right">
+                <span class="status-item">
+                    <i class="fas fa-clock"></i>
+                    Last generated: Never
+                </span>
+                <span class="status-item">
+                    <i class="fas fa-cloud"></i>
+                    Auto-save enabled
+                </span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h3>AI is generating your code...</h3>
+            <p>This might take a few seconds</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
