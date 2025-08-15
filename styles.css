@@ -464,6 +464,10 @@ body {
     color: #238636;
 }
 
+.text-orange {
+    color: #f39c12;
+}
+
 /* Loading Overlay */
 .loading-overlay {
     position: fixed;

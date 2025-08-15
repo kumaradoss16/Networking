@@ -17,6 +17,42 @@ class VibeCodePlatform {
         this.setupEventListeners();
         this.updatePreviewUrl();
         this.simulateCollaboratorActivity();
+        this.checkBackendConnection();
+    }
+
+    async checkBackendConnection() {
+        try {
+            const response = await fetch('http://localhost:3001/health');
+            if (response.ok) {
+                const data = await response.json();
+                this.updateConnectionStatus('connected', 'AI Backend Online');
+                console.log('✅ AI Backend connected:', data);
+            } else {
+                throw new Error('Backend health check failed');
+            }
+        } catch (error) {
+            this.updateConnectionStatus('disconnected', 'AI Backend Offline - Using Fallback');
+            console.log('⚠️ AI Backend offline, using fallback mode');
+        }
+    }
+
+    updateConnectionStatus(status, message) {
+        // Update the status in the status bar
+        const statusElement = document.querySelector('.status-left');
+        if (statusElement) {
+            const existingStatus = statusElement.querySelector('.ai-status');
+            if (existingStatus) {
+                existingStatus.remove();
+            }
+            
+            const aiStatusElement = document.createElement('span');
+            aiStatusElement.className = `status-item ai-status`;
+            aiStatusElement.innerHTML = `
+                <i class="fas fa-robot ${status === 'connected' ? 'text-green' : 'text-orange'}"></i>
+                ${message}
+            `;
+            statusElement.appendChild(aiStatusElement);
+        }
     }
 
     setupEventListeners() {
@@ -77,22 +113,126 @@ class VibeCodePlatform {
             return;
         }
 
-        this.showLoading(true);
-        
-        // Simulate AI processing time
-        await this.delay(2000 + Math.random() * 2000);
+        if (description.length > 2000) {
+            this.showNotification('Description is too long. Please keep it under 2000 characters.', 'warning');
+            return;
+        }
+
+        this.showLoading(true, 'AI is analyzing your request...');
         
         try {
-            const generatedCode = this.mockAIEngine(description);
-            this.updateCodeEditors(generatedCode);
-            this.updatePreview();
-            this.updateStatus('Last generated: Just now');
-            this.showNotification('Code generated successfully! 🎉', 'success');
+            // Try to call the real AI backend first
+            const response = await this.callAIBackend(description);
+            
+            if (response.success) {
+                this.updateCodeEditors(response.data);
+                this.updatePreview();
+                this.updateStatus(`Last generated: Just now (${response.source})`);
+                
+                const sourceText = response.source === 'openai' ? 'OpenAI GPT-4' : 'Mock AI';
+                this.showNotification(`🤖 Code generated successfully using ${sourceText}! 🎉`, 'success');
+                
+                // Update AI suggestions based on generated code
+                if (response.source === 'openai') {
+                    this.updateAISuggestions(response.data);
+                }
+            } else {
+                throw new Error(response.message || 'AI generation failed');
+            }
         } catch (error) {
-            this.showNotification('Failed to generate code. Please try again.', 'error');
+            console.error('AI generation error:', error);
+            
+            // Fallback to mock AI
+            this.showLoading(true, 'Using fallback AI engine...');
+            await this.delay(1000);
+            
+            try {
+                const fallbackCode = this.mockAIEngine(description);
+                this.updateCodeEditors(fallbackCode);
+                this.updatePreview();
+                this.updateStatus('Last generated: Just now (fallback)');
+                this.showNotification('⚠️ Generated using fallback AI. For full AI features, configure OpenAI API key.', 'warning');
+            } catch (fallbackError) {
+                this.showNotification('❌ Failed to generate code. Please try again.', 'error');
+            }
         } finally {
             this.showLoading(false);
         }
+    }
+
+    async callAIBackend(description) {
+        const API_BASE_URL = 'http://localhost:3001';
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/generate`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    description: description,
+                    type: 'fullApp',
+                    model: 'gpt-4'
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || `HTTP ${response.status}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            // Network error or server not running
+            if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                throw new Error('AI backend server not running. Starting fallback mode...');
+            }
+            throw error;
+        }
+    }
+
+    async updateAISuggestions(generatedCode) {
+        try {
+            const response = await fetch('http://localhost:3001/api/suggest', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    code: JSON.stringify(generatedCode),
+                    type: 'fullApp'
+                })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                if (result.success && result.suggestions) {
+                    this.displayAISuggestions(result.suggestions);
+                }
+            }
+        } catch (error) {
+            console.log('Could not fetch AI suggestions:', error.message);
+        }
+    }
+
+    displayAISuggestions(suggestions) {
+        const suggestionsContainer = document.querySelector('.ai-suggestions');
+        if (!suggestionsContainer) return;
+
+        // Clear existing suggestions
+        suggestionsContainer.innerHTML = '';
+
+        // Add new AI suggestions
+        suggestions.forEach((suggestion, index) => {
+            const suggestionItem = document.createElement('div');
+            suggestionItem.className = 'suggestion-item';
+            suggestionItem.innerHTML = `
+                <i class="fas fa-robot"></i>
+                <span>${suggestion}</span>
+            `;
+            suggestionItem.addEventListener('click', () => this.applySuggestion(suggestionItem));
+            suggestionsContainer.appendChild(suggestionItem);
+        });
     }
 
     mockAIEngine(description) {
