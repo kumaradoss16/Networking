@@ -1,32 +1,6 @@
-<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" style="height:64px;margin-right:32px"/>
-
 # VPN Connectivity Verification Tool
 
-> **Advanced cross-platform VPN connection validator written in C**
-
-[
-[
-[
-
-***
-
-## 📋 Table of Contents
-
-- [Overview](#overview)
-- [Features](#features)
-- [How It Works](#how-it-works)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Technical Details](#technical-details)
-- [Code Structure](#code-structure)
-- [Platform-Specific Notes](#platform-specific-notes)
-- [Security Considerations](#security-considerations)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [License](#license)
-
-***
+**Advanced cross-platform VPN connection validator written in C**
 
 ## 🎯 Overview
 
@@ -458,61 +432,3 @@ ifconfig
 
 
 ***
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these guidelines:
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/AmazingFeature`)
-3. **Commit** your changes (`git commit -m 'Add some AmazingFeature'`)
-4. **Push** to the branch (`git push origin feature/AmazingFeature`)
-5. **Open** a Pull Request
-
-### Areas for Improvement
-
-- [ ] Add IPv6 support
-- [ ] Implement WebRTC leak detection
-- [ ] Add GUI version
-- [ ] Support for more VPN providers
-- [ ] Automated leak testing integration
-- [ ] JSON output mode
-
-***
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-***
-
-## 🙏 Acknowledgments
-
-- **ifconfig.me** for public IP API
-- VPN provider communities for adapter naming conventions
-- Open-source security research community
-
-***
-
-## 📞 Support
-
-- **Issues:** [GitHub Issues](https://github.com/yourusername/vpn-checker/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/yourusername/vpn-checker/discussions)
-- **Email:** your.email@example.com
-
-***
-
-## 📊 Project Stats
-
-
-***
-
-**Made with ❤️ for privacy and security enthusiasts**
-
-*Last Updated: November 28, 2025*
-<span style="display:none">[^1]</span>
-
-<div align="center">⁂</div>
-
-[^1]: main.c
-
