@@ -1,6 +1,4 @@
-# NetDiag - Network Diagnostics Tool
-
-## Complete Professional Documentation
+# NetDiag - Network Diagnostics Tool (Complete Professional Documentation)
 
 ## 1. Overview
 
