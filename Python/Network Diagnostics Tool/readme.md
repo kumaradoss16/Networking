@@ -2,8 +2,6 @@
 
 ## Complete Professional Documentation
 
-***
-
 ## 1. Overview
 
 ### What is NetDiag?
