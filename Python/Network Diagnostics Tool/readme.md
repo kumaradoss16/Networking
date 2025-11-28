@@ -956,14 +956,3 @@ python netdiag_cli.py --host 192.168.1.1 --ping
 ***
 
 **End of Documentation**
-
-*NetDiag - Professional Network Diagnostics Tool*
-*Version: 1.0 | Last Updated: November 28, 2025*
-<span style="display:none">[^1][^2]</span>
-
-<div align="center">⁂</div>
-
-[^1]: netdiag_cli.py
-
-[^2]: netdiag_core.py
-
