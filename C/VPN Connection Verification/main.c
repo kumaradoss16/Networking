@@ -604,6 +604,7 @@ int fetch_public_ip(char *ip_buffer)
     return 0;
 }
 
+// Fetch public IPv6 address using curl
 int fetch_public_ipv6(char *ip_buffer)
 {
     FILE *fp;
@@ -622,6 +623,7 @@ int fetch_public_ipv6(char *ip_buffer)
     return 0;
 }
 
+// Fetch geolocation for Ip address
 int fetch_geolocation(char *country_buffer, char *region_buffer, char *city_buffer)
 {
     FILE *fp;
