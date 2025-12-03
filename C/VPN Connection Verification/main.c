@@ -3,6 +3,13 @@
 #include <string.h>
 #include <ctype.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#define sleep(x) Sleep((x) * 1000)
+#else
+#include <unistd.h>
+#endif
+
 // Platform detection macros
 #ifdef _WIN32
 #define OS_WINDOWS
@@ -43,6 +50,7 @@ int fetch_geolocation(char *country_buffer, char *region_buffer, char *city_buff
 int measure_latency(const char *host);
 int extract_first_dns_ip(const char *dns_buffer, char *ip_output);
 int check_dns_leak(const char *dns_servers, const char *isp_dns);
+int monitor_vpn_connection(int interval_seconds, int duration_seconds);
 
 int main()
 {
@@ -62,8 +70,42 @@ int main()
     int vpn_adapter_detected = 0;
     char country_before[100], country_after[100], region_before[100], region_after[100], city_before[100], city_after[100];
 
+    int monitor_mode = 0;
+
     print_separator('=', 65);
-    printf("      Advanced VPN Connectivity Verfication Tool\n");
+    printf("      Advanced VPN Connectivity Verification Tool\n");
+    print_separator('=', 65);
+    printf("\nSelect Mode:\n"); // Fixed: was "/nSelect Mode:"
+    printf("   1. Standard VPN Verification (Before/After)\n");
+    printf("   2. Real-Time Monitor Mode\n"); // Fixed: was "Real_time"
+    printf("\nEnter choice (1 or 2): ");
+
+    int choice;
+    scanf("%d", &choice);
+    getchar(); // Consume the newline character
+
+    if (choice == 2)
+    {
+        monitor_mode = 1;
+        printf("\nReal-Time Monitor Configuration:\n");
+        printf("Enter check interval (seconds, default 5): ");
+        int interval = 5;
+        scanf("%d", &interval);
+        getchar();
+
+        printf("Enter monitoring duration (seconds, default 60): ");
+        int duration = 60;
+        scanf("%d", &duration); // Fixed: was scanf("%d", duration) - missing &
+        getchar();
+
+        printf("\n>>> Connect to your VPN NOW <<<\n");
+        printf(">>> Press ENTER to start monitoring <<<\n");
+        getchar();
+
+        monitor_vpn_connection(interval, duration);
+        return 0;
+    }
+    // Continue with standard mode...
     print_separator('=', 65);
 
 #ifdef OS_WINDOWS
@@ -73,7 +115,7 @@ int main()
 #elif defined(OS_MAC)
     printf("Operating System: macOS\n");
 #else
-    printf("Operting System: unknown\n");
+    printf("Operating System: unknown\n"); // Fixed: was "Operting"
 #endif
     print_separator('=', 65);
 
@@ -148,7 +190,10 @@ int main()
         measure_latency("8.8.8.8");
     }
 
+    // Step 4.1: Fetch Geolocation Before VPN
+    printf("\n[Step 4.1] Fetching geolocation...\n");
     fetch_geolocation(country_before, region_before, city_before);
+    printf("Location: %s, %s, %s\n", city_before, region_before, country_before);
 
     print_separator('=', 65);
     printf("\n>>> NOW CONNECT TO YOUR VPN <<<\n");
@@ -157,22 +202,22 @@ int main()
 
     print_separator('=', 65);
 
-    // Step 5: Check IP Before VPN Connection
-    printf("\n[Step 1] Checking current public IP address...\n");
+    // Step 5: Check IP After VPN Connection
+    printf("\n[Step 5] Checking current public IP address...\n"); // Fixed: was "Step 1"
     if (fetch_public_ip(ip_after) != 0)
     {
         printf("ERROR: Unable to fetch public IP address.\n");
         return 1;
     }
     printf("Public IP after VPN: %s\n", ip_after);
-    printf("\n[Step 1.1] Checking current public IPv6 address...\n");
+    printf("\n[Step 5.1] Checking current public IPv6 address...\n");
     if (fetch_public_ipv6(ipv6_after) == 0)
     {
         size_t len = strlen(ipv6_after);
         if (len > 0 && ipv6_after[len - 1] == '\n')
         {
             ipv6_after[len - 1] = '\0';
-            printf("Public IPv6 before VPN: %s\n", ipv6_after);
+            printf("Public IPv6 after VPN: %s\n", ipv6_after); // Fixed: was "before VPN"
         }
     }
     else
@@ -181,8 +226,8 @@ int main()
         strcpy(ipv6_after, "N/A");
     }
 
-    // Step 6: Check DNS Servers Before VPN Connection
-    printf("\n[Step 2] Checking current DNS Servers...\n");
+    // Step 6: Check DNS Servers After VPN Connection
+    printf("\n[Step 6] Checking current DNS Servers...\n"); // Fixed: was "Step 2"
     if (fetch_dns_servers(dns_after) != 0)
     {
         printf("WARNING: Unable to fetch DNS information.\n");
@@ -210,8 +255,8 @@ int main()
         }
     }
 
-    // Step 7: Check VPN Network Adapter Before VPN Connection
-    printf("\n[Step 3] Scanning for VPN network adapters...\n");
+    // Step 7: Check VPN Network Adapter After VPN Connection
+    printf("\n[Step 7] Scanning for VPN network adapters...\n"); // Fixed: was "Step 3"
     detect_vpn_adapter(vpn_adapter_after);
     if (strlen(vpn_adapter_after) > 0)
     {
@@ -224,7 +269,7 @@ int main()
     }
 
     // Step 8: Measure Latency After VPN
-    printf("\n[Step 4] Measuring network latency (After VPN)...\n");
+    printf("\n[Step 8] Measuring network latency (After VPN)...\n"); // Fixed: was "Step 4"
     if (extract_first_dns_ip(dns_after, dns_ip) == 0)
     {
         printf("Pinging DNS server: %s\n", dns_ip);
@@ -248,10 +293,10 @@ int main()
 
     // Compare IPs
     ip_changed = (strcmp(ip_before, ip_after) != 0);
-    printf("%-30s %s\n", "IP Changed:", ip_changed ? "YES" : "NO");
+    printf("\n%-30s %s\n", "IP Changed:", ip_changed ? "YES" : "NO");
 
     int ipv6_changed = (strcmp(ipv6_before, ipv6_after) != 0);
-    printf("%-30s %s\n", "IP Changed:", ipv6_changed ? "YES" : "NO");
+    printf("%-30s %s\n", "IPv6 Changed:", ipv6_changed ? "YES" : "NO"); // Fixed: was "IP Changed"
 
     // Compare DNS Servers
     dns_changes = (strcmp(dns_before, dns_after) != 0);
@@ -259,6 +304,7 @@ int main()
 
     // VPN Adapter Status
     printf("%-30s %s\n", "VPN Adapter Detected:", vpn_adapter_detected ? "YES" : "NO");
+
     // DNS Leak Status
     int dns_leak = 0;
     if (strlen(isp_dns) > 0)
@@ -267,10 +313,9 @@ int main()
         printf("%-30s %s\n", "DNS Leak Detected:", dns_leak ? "YES" : "NO");
     }
 
-    // Usage:
-    // ... connect VPN ...
+    // Geolocation changes
     fetch_geolocation(country_after, region_after, city_after);
-    printf("Country changed: %s to %s\n", country_before, country_after);
+    printf("\nCountry changed: %s to %s\n", country_before, country_after);
     printf("Region changed: %s to %s\n", region_before, region_after);
     printf("City changed: %s to %s\n", city_before, city_after);
 
@@ -286,7 +331,7 @@ int main()
     }
     else if (ip_changed && vpn_adapter_detected && dns_leak)
     {
-        printf("              VPN STATUS: ACTIVE WITH DNS LEAK \n");
+        printf("              VPN STATUS: ACTIVE WITH DNS LEAK\n");
         printf("  VPN is active but DNS queries may leak to your ISP!\n");
     }
     else if (ip_changed && !vpn_adapter_detected)
@@ -314,7 +359,74 @@ int main()
     return 0;
 }
 
-// Extract the first DNS IP address from dns_buffer
+// Real-time VPN connection monitor
+int monitor_vpn_connection(int interval_seconds, int duration_seconds)
+{
+    int elapsed = 0;
+    char ip_current[IP_SIZE];
+    char ip_first[IP_SIZE] = {0};
+
+    printf("\n");
+    print_separator('=', 65);
+    printf("           Real-Time VPN Connection Monitor\n");
+    printf("           Monitoring for %d seconds...\n", duration_seconds);
+    print_separator('=', 65);
+    printf("\n");
+
+    while (elapsed < duration_seconds)
+    {
+        // Check IP
+        if (fetch_public_ip(ip_current) == 0)
+        {
+            // Store first IP
+            if (ip_first[0] == '\0')
+            {
+                strcpy(ip_first, ip_current);
+            }
+
+            // Remove newline from current IP
+            size_t len = strlen(ip_current);
+            if (len > 0 && ip_current[len - 1] == '\n')
+            {
+                ip_current[len - 1] = '\0';
+            }
+
+            // Also remove newline from first IP for comparison
+            len = strlen(ip_first);
+            if (len > 0 && ip_first[len - 1] == '\n')
+            {
+                ip_first[len - 1] = '\0';
+            }
+
+            // Check for IP change
+            int ip_changed = (strcmp(ip_first, ip_current) != 0);
+            printf("[%4ds] IP: %-15s ", elapsed, ip_current);
+
+            if (ip_changed)
+            {
+                printf("WARNING [IP CHANGED!]\n");
+            }
+            else
+            {
+                printf("OK [Stable]\n");
+            }
+        }
+        else
+        {
+            printf("[%4ds] ERROR Unable to fetch IP\n", elapsed);
+        }
+
+        sleep(interval_seconds);
+        elapsed += interval_seconds;
+    }
+
+    print_separator('=', 65);
+    printf("Monitoring complete.\n");
+    print_separator('=', 65);
+
+    return 0;
+}
+
 // Extract the first DNS IP address from dns_buffer
 int extract_first_dns_ip(const char *dns_buffer, char *ip_output)
 {
@@ -580,7 +692,7 @@ int fetch_geolocation(char *country_buffer, char *region_buffer, char *city_buff
     return 0;
 }
 
-// Fetch DNS Server based pn platform
+// Fetch DNS Server based on platform
 int fetch_dns_servers(char *dns_buffer)
 {
     FILE *fp;
