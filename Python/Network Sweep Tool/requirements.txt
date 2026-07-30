@@ -1,0 +1,11 @@
+mac-vendor-lookup==0.1.15
+ipaddress
+platform
+subprocess
+concurrent.futures
+re
+socket
+typing
+time
+argparse
+json
