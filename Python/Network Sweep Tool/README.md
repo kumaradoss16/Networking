@@ -28,7 +28,7 @@ Total hosts to scan: 254
 Using 50 concurrent workers
 --------------------------------------------------------------------------------
 [v] 192.168.1.1     - UP | TTL=64  | RTT=2ms  | MAC=B4:3D:08:3D:FA:D0 | Name=MYGROUP         | Vendor=GX International BV
-[v] 192.168.1.7     - UP | TTL=128 | RTT=1ms  | MAC=FC:34:97:BF:54:71 | Name=BALSAM-10       | Vendor=ASUSTek COMPUTER INC.
+[v] 192.168.1.7     - UP | TTL=128 | RTT=1ms  | MAC=FC:34:97:BF:54:71 | Name=USER-10       | Vendor=ASUSTek COMPUTER INC.
 [v] 192.168.1.9     - UP | TTL=128 | RTT=1ms  | MAC=A0:36:BC:24:D0:4F | Name=DESKTOP-HEDNV3K | Vendor=ASUSTek COMPUTER INC.
 [v] 192.168.1.50    - UP | TTL=128 | RTT=1ms  | MAC=B0:6E:BF:D2:E2:10 | Name=SERVER          | Vendor=ASUSTek COMPUTER INC.
 
