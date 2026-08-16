@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Configuration Suite - Project Showcase</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Main Content - Left Column (70%) -->
+        <main class="main-content">
+            <!-- Section 1: Introduction -->
+            <section id="introduction" class="intro-section">
+                <h1>Network Configuration Suite</h1>
+                <img src="https://via.placeholder.com/600x300/2a2a2a/4a90e2?text=Network+Infrastructure+Project" alt="Network Configuration Project" class="project-image">
+                <p class="project-description">
+                    The Network Configuration Suite is a comprehensive toolkit designed to streamline and automate network infrastructure management. 
+                    This project encompasses multiple critical networking components including DHCP server configuration, VLAN management, WAN setup procedures, 
+                    and BGP routing protocols. Built with scalability and reliability in mind, this suite provides network administrators with the tools 
+                    they need to efficiently manage complex network environments while maintaining security and performance standards.
+                </p>
+            </section>
+
+            <!-- Section 2: Prerequisites -->
+            <section id="prerequisites" class="prerequisites-section">
+                <h2>Prerequisites</h2>
+                <ul class="prerequisites-list">
+                    <li>Strong understanding of TCP/IP networking fundamentals</li>
+                    <li>Experience with network routing protocols (BGP, OSPF)</li>
+                    <li>Knowledge of VLAN configuration and management</li>
+                    <li>Familiarity with DHCP server administration</li>
+                    <li>Basic scripting knowledge (Python, Bash)</li>
+                    <li>Access to network simulation tools (GNS3, Packet Tracer)</li>
+                    <li>Understanding of network security principles</li>
+                </ul>
+            </section>
+
+            <!-- Section 3: Table of Contents -->
+            <section id="toc" class="toc-section">
+                <h2>Table of Contents</h2>
+                <ol class="toc-list">
+                    <li><a href="#prerequisites">Prerequisites</a></li>
+                    <li><a href="#implementation">Implementation</a></li>
+                    <li><a href="#python-config">Python Configuration Scripts</a></li>
+                    <li><a href="#bash-automation">Bash Automation</a></li>
+                    <li><a href="#conclusion">Project Conclusion</a></li>
+                    <li><a href="#demo-source">Demo and Source</a></li>
+                    <li><a href="#other-projects">My Other Work</a></li>
+                </ol>
+            </section>
+
+            <!-- Section 4: Code Snippets and Explanations -->
+            <section id="implementation" class="implementation-section">
+                <h2>Implementation</h2>
+                
+                <div id="python-config" class="code-subsection">
+                    <h3>Python</h3>
+                    <pre><code class="code-block">#!/usr/bin/env python3
+import ipaddress
+import json
+from typing import Dict, List
+
+class DHCPPool:
+    def __init__(self, network: str, start_ip: str, end_ip: str):
+        self.network = ipaddress.IPv4Network(network)
+        self.start_ip = ipaddress.IPv4Address(start_ip)
+        self.end_ip = ipaddress.IPv4Address(end_ip)
+        self.leases = {}
+    
+    def allocate_ip(self, mac_address: str) -> str:
+        """Allocate an IP address from the pool"""
+        for ip in range(int(self.start_ip), int(self.end_ip) + 1):
+            ip_addr = ipaddress.IPv4Address(ip)
+            if ip_addr not in self.leases.values():
+                self.leases[mac_address] = ip_addr
+                return str(ip_addr)
+        raise Exception("No available IP addresses in pool")
+
+# Example usage
+dhcp_pool = DHCPPool("192.168.1.0/24", "192.168.1.100", "192.168.1.200")
+allocated_ip = dhcp_pool.allocate_ip("aa:bb:cc:dd:ee:ff")
+print(f"Allocated IP: {allocated_ip}")
+</code></pre>
+                    <p class="code-explanation">
+                        This Python script demonstrates a DHCP IP allocation system. The DHCPPool class manages IP address assignments within a specified network range, 
+                        tracking lease information and ensuring no duplicate allocations. This forms the core logic for automated IP address management in our network configuration suite.
+                    </p>
+                </div>
+
+                <div id="bash-automation" class="code-subsection">
+                    <h3>Bash</h3>
+                    <pre><code class="code-block">#!/bin/bash
+
+# VLAN Configuration Script
+configure_vlan() {
+    local vlan_id=$1
+    local vlan_name=$2
+    local interface=$3
+    
+    echo "Configuring VLAN ${vlan_id} (${vlan_name}) on interface ${interface}"
+    
+    # Create VLAN interface
+    sudo ip link add link ${interface} name ${interface}.${vlan_id} type vlan id ${vlan_id}
+    
+    # Bring interface up
+    sudo ip link set ${interface}.${vlan_id} up
+    
+    # Configure IP if provided
+    if [ ! -z "$4" ]; then
+        sudo ip addr add $4 dev ${interface}.${vlan_id}
+        echo "IP $4 assigned to VLAN ${vlan_id}"
+    fi
+    
+    echo "VLAN ${vlan_id} configuration complete"
+}
+
+# Example usage
+configure_vlan 100 "Production" "eth0" "192.168.100.1/24"
+configure_vlan 200 "Development" "eth0" "192.168.200.1/24"
+</code></pre>
+                    <p class="code-explanation">
+                        This Bash script automates VLAN configuration on Linux systems. It creates VLAN interfaces, assigns IP addresses, and brings them online. 
+                        The script is designed for rapid deployment of network segmentation, allowing administrators to quickly isolate different network segments 
+                        for security and traffic management purposes.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Section 5: Conclusion -->
+            <section id="conclusion" class="conclusion-section">
+                <h2>Project Conclusion</h2>
+                <p class="conclusion-text">
+                    The Network Configuration Suite represents a comprehensive approach to modern network infrastructure management. By combining 
+                    automated DHCP management, flexible VLAN configuration, robust WAN connectivity, and dynamic BGP routing, this project provides 
+                    a solid foundation for enterprise-grade networking solutions. Future enhancements will include web-based management interfaces, 
+                    enhanced monitoring capabilities, and integration with popular network management platforms like SNMP and NetBox.
+                </p>
+            </section>
+
+            <!-- Section 6: Demo and Source -->
+            <section id="demo-source" class="demo-source-section">
+                <div class="button-container">
+                    <a href="#" class="btn btn-primary">Live Preview</a>
+                    <a href="#" class="btn btn-secondary">Source Code</a>
+                </div>
+            </section>
+
+            <!-- Section 7: Other Projects -->
+            <section id="other-projects" class="other-projects-section">
+                <h2>My Other Work</h2>
+                <div class="project-cards">
+                    <div class="project-card">
+                        <img src="https://via.placeholder.com/250x150/2a2a2a/e74c3c?text=Security+Tools" alt="Security Tools Project" class="card-image">
+                        <h4>Network Security Analyzer</h4>
+                        <p class="card-description">A comprehensive security scanning tool that identifies vulnerabilities in network infrastructure and provides detailed remediation recommendations.</p>
+                        <a href="#" class="card-link">View Project</a>
+                    </div>
+                    <div class="project-card">
+                        <img src="https://via.placeholder.com/250x150/2a2a2a/27ae60?text=Monitoring+Suite" alt="Monitoring Suite Project" class="card-image">
+                        <h4>Real-time Network Monitor</h4>
+                        <p class="card-description">A web-based monitoring dashboard that provides real-time insights into network performance, bandwidth utilization, and system health metrics.</p>
+                        <a href="#" class="card-link">View Project</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Sidebar - Right Column (30%) -->
+        <aside class="sidebar">
+            <!-- About Section -->
+            <section class="about-section">
+                <h3>About This Site</h3>
+                <p class="about-text">
+                    This showcase demonstrates advanced networking concepts and automation techniques. The projects featured here 
+                    represent real-world solutions for network infrastructure challenges, emphasizing scalability, security, and maintainability.
+                </p>
+            </section>
+
+            <!-- Advertisements -->
+            <section class="ads-section">
+                <div class="ad-placeholder ad-large">
+                    <span>Ad: 300x250</span>
+                </div>
+                <div class="ad-placeholder ad-tall">
+                    <span>Ad: 300x400</span>
+                </div>
+                <div class="ad-placeholder ad-small">
+                    <span>Ad: 300x100</span>
+                </div>
+            </section>
+
+            <!-- Related Topics -->
+            <section class="related-section">
+                <h3>Related Topics</h3>
+                <ul class="related-list">
+                    <li><a href="#">Advanced BGP Route Policies</a></li>
+                    <li><a href="#">Network Automation with Ansible</a></li>
+                    <li><a href="#">SDN Controller Implementation</a></li>
+                    <li><a href="#">Network Monitoring Best Practices</a></li>
+                    <li><a href="#">Zero Trust Network Architecture</a></li>
+                </ul>
+            </section>
+        </aside>
+    </div>
+</body>
+</html>
