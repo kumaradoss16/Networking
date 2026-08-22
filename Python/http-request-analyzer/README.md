@@ -1,103 +1,261 @@
 # HTTP Request Analyzer
 
-## Overview
+## Description
 
-HTTP Request Analyzer is a command-line tool for inspecting a URL from three angles at once: DNS resolution, the HTTP request/response cycle, and the TLS/SSL certificate on the server (when the URL is HTTPS). Point it at a URL and it resolves the hostname, times and performs the HTTP request, and -> if applicable -> opens a TLS connection to pull certificate details, printing a single readable report to the terminal.
+HTTP Request Analyzer is a command-line Python tool that inspects a URL and displays its DNS, HTTP, redirect, response header, timing, and TLS certificate information.
 
-It's aimed at the kind of quick diagnostic check a developer or sysadmin runs when something's off with a site: is DNS resolving correctly, how long is the request taking, what headers is the server sending back, and is the certificate about to expire.
+The tool accepts a domain name or complete URL. If no scheme is provided, it uses HTTPS by default.
 
 ## Features
 
-- **DNS resolution** -> resolves a hostname to its IP addresses (IPv4/IPv6) and reports how long resolution took, in milliseconds.
-- **HTTP inspection** -> performs a GET request and reports status code, reason phrase, response time, content length, and the full set of response headers.
-- **Redirect tracking** -> records the chain of URLs followed if the request is redirected.
-- **TLS/certificate inspection** -> for HTTPS targets, opens a raw TLS connection to read the negotiated protocol version and cipher suite, plus the certificate's subject, issuer, validity window, and days remaining until expiry (with a warning flag when fewer than 30 days remain).
-- **Configurable timeout** -> request/connection timeout can be set via a CLI flag (default 8 seconds).
-- **Insecure mode** -> an `--insecure` flag to skip TLS certificate/hostname verification, useful for self-signed certificates in dev/test environments.
-- **Formatted terminal report** -> all three sections (DNS, HTTP, TLS) are printed in a structured, human-readable block.
-- **Non-zero exit code on HTTP failure** -> the process exits with status `1` if the HTTP request fails, making it usable in scripts/CI checks.
+- Resolves a hostname to IPv4 and IPv6 addresses.
+- Measures DNS resolution time.
+- Sends an HTTP request to the target URL.
+- Displays the HTTP status code and reason.
+- Measures HTTP response time.
+- Displays response headers.
+- Reports downloaded response size.
+- Shows the redirect chain.
+- Inspects HTTPS/TLS connection details.
+- Displays the negotiated TLS protocol and cipher suite.
+- Displays certificate subject, issuer, validity dates, and remaining days.
+- Supports custom request timeouts.
+- Supports insecure TLS connections for self-signed certificates.
 
-## Tech Stack
+## Technologies Used
 
-- **Language**: Python 3 (uses `from __future__ import annotations` and the `X | None` union syntax, so Python 3.10+ is expected)
-- **HTTP client**: [`requests`](https://pypi.org/project/requests/)
-- **Certificate parsing**: [`cryptography`](https://pypi.org/project/cryptography/) (`x509`, `hazmat.backends`)
-- **Standard library**: `argparse` (CLI), `socket` (DNS + raw TCP), `ssl` (TLS handshake), `dataclasses`, `datetime`, `urllib.parse`, `time`, `sys`
-
-No database, web framework, or external service is used -> this is a self-contained script.
-
-## Project Architecture
-
-The project is a single script organized into clear sections rather than separate modules. There's no client/server split -> it's a synchronous CLI tool that performs three sequential network checks against one target and prints the result.
-
-```mermaid
-flowchart TD
-    A[CLI entry: main] --> B[Parse args with argparse]
-    B --> C[HTTPRequestAnalyzer.analyze]
-    C --> D[_resolve_dns]
-    C --> E[_inspect_http]
-    C --> F{scheme is https<br/>and DNS succeeded?}
-    F -- yes --> G[_inspect_tls]
-    F -- no --> H[tls_info = None]
-    D --> I[AnalysisResult]
-    E --> I
-    G --> I
-    H --> I
-    I --> J[print_report]
-    J --> K[Exit code 0 or 1]
-```
-
-The flow, concretely:
-
-1. `main()` parses CLI arguments and constructs an `HTTPRequestAnalyzer`.
-2. `analyze()` parses the URL, then calls the three internal inspection methods in order: DNS, HTTP, and (conditionally) TLS.
-3. Each inspection method returns its own dataclass (`DNSInfo`, `HTTPInfo`, `TLSInfo`), catching and recording errors locally rather than raising, so one failed check doesn't stop the others from running.
-4. The three results are combined into a single `AnalysisResult`.
-5. `print_report()` takes that result and formats it into the terminal output.
-6. `main()` returns a process exit code based on whether the HTTP check errored.
+- Python
+- `argparse`
+- `socket`
+- `ssl`
+- `requests`
+- `cryptography`
+- `dataclasses`
+- Python type annotations
 
 ## Project Structure
 
-This project currently consists of a single file -> there's no multi-folder layout, package structure, tests, or configuration files in what was analyzed.
+The project currently contains one Python program with the following main parts:
 
 ```text
-.
-└── main.py   # Entire application: data models, analyzer logic, report printing, and CLI entry point
+project/
+└── analyzer.py
 ```
 
-Within `main.py`, the code is organized into four logical sections (marked by comments in the file):
+The filename of the Python script is not specified in the provided code.
 
-- **Data Containers** -> `DNSInfo`, `TLSInfo`, `HTTPInfo`, and `AnalysisResult` dataclasses that hold the results of each check.
-- **Analyzer** -> the `HTTPRequestAnalyzer` class, with `analyze()` as the public entry point and `_resolve_dns()`, `_inspect_http()`, `_inspect_tls()` as the three private check methods.
-- **Report formatting** -> `print_report()`, which renders an `AnalysisResult` as readable terminal output.
-- **CLI** -> `main()`, which wires up `argparse` and drives the whole process.
+Important components inside the script:
 
-### A note on what's not here
+- `DNSInfo`: Stores DNS resolution information.
+- `TLSInfo`: Stores TLS connection and certificate information.
+- `HTTPInfo`: Stores HTTP response information.
+- `AnalysisResult`: Combines DNS, HTTP, and TLS results.
+- `HTTPRequestAnalyzer`: Performs the analysis.
+- `print_report()`: Prints the analysis results.
+- `main()`: Handles command-line arguments and starts the program.
 
-Since only `main.py` was provided, this documentation doesn't include a dependency manifest (`requirements.txt`/`pyproject.toml`), README badges, tests, Docker files, or environment configuration -> none of these exist in the uploaded project. If you add a `requirements.txt`, it would need at minimum:
+## How It Works
+
+1. The program reads a URL from the command line.
+2. If the URL does not contain a scheme, `https://` is added.
+3. The hostname is resolved using `socket.getaddrinfo()`.
+4. The program sends an HTTP GET request using the `requests` library.
+5. Redirects, headers, status information, response time, and content size are collected.
+6. For HTTPS URLs, the program creates a TLS connection using Python's `ssl` module.
+7. The server certificate is parsed with the `cryptography` library.
+8. The final DNS, HTTP, and TLS information is printed in the terminal.
+
+## Requirements
+
+- Python 3.10 or newer is recommended because the code uses modern type annotation syntax.
+- `requests`
+- `cryptography`
+
+## Installation
+
+Create and activate a virtual environment:
+
+```bash
+python -m venv .venv
+```
+
+On Linux or macOS:
+
+```bash
+source .venv/bin/activate
+```
+
+On Windows:
+
+```bash
+.venv\Scripts\activate
+```
+
+Install the required packages:
+
+```bash
+pip install requests cryptography
+```
+
+The project does not include a dependency file in the provided code. A `requirements.txt` file can be created with:
 
 ```text
 requests
 cryptography
 ```
 
-## Usage
+Then install the dependencies with:
 
 ```bash
-python main.py https://example.com
-python main.py example.com --timeout 5
-python main.py https://self-signed.example --insecure
+pip install -r requirements.txt
 ```
 
-### CLI arguments
+## Usage
 
-| Argument | Required | Default | Description |
-|---|---|---|---|
-| `url` | Yes | -> | Target URL to analyze (scheme defaults to `https://` if omitted) |
-| `--timeout` | No | `8.0` | Timeout in seconds for DNS/HTTP/TLS operations |
-| `--insecure` | No | `False` | Skip TLS certificate and hostname verification |
+Run the program by passing a domain or URL:
 
-### Exit codes
+```bash
+python analyzer.py https://example.com
+```
 
-- `0` -> HTTP check succeeded (DNS or TLS issues alone do not change the exit code)
-- `1` -> HTTP request failed
+A domain without a scheme is also accepted:
+
+```bash
+python analyzer.py example.com
+```
+
+Set a custom timeout:
+
+```bash
+python analyzer.py https://example.com --timeout 15
+```
+
+Skip TLS certificate verification:
+
+```bash
+python analyzer.py https://localhost:8443 --insecure
+```
+
+The `--insecure` option is useful for self-signed certificates, but it should not be used for normal secure connections.
+
+Example output:
+
+```text
+------------------------------------------------------------
+HTTP REQUEST ANALYZER = https://example.com
+
+[DNS]
+    Hostname     : example.com
+    IP Addresses : 93.184.216.34
+    Resolve time : 25.41 ms
+
+[HTTP]
+    Status        : 200 OK
+    Response time : 180.22 ms
+    Content size  : 1256 bytes
+     Headers:
+    Content-Type: text/html
+
+[TLS]
+    Protocol: TLSv1.3
+    Cipher suite: TLS_AES_256_GCM_SHA384
+    Subject: CN=example.com
+    Issuer: ...
+    Valid from: ...
+    Valid until: ...
+    Days to expiry: 80
+------------------------------------------------------------
+```
+
+The exact values depend on the target URL and network connection.
+
+## Configuration
+
+The program does not use a configuration file or environment variables.
+
+Available command-line options:
+
+| Option | Description | Default |
+|---|---|---:|
+| `url` | Target domain or URL | Required |
+| `--timeout` | Request and connection timeout in seconds | `8.0` |
+| `--insecure` | Disables TLS certificate and hostname verification | Disabled |
+
+The HTTP request uses this User-Agent header:
+
+```text
+HTTP-Request-Analyzer/1.0
+```
+
+## Example
+
+Analyze a website:
+
+```bash
+python analyzer.py https://example.org
+```
+
+Analyze a local HTTPS service with a self-signed certificate:
+
+```bash
+python analyzer.py https://localhost:8443 --insecure
+```
+
+For an HTTP URL, TLS inspection is skipped:
+
+```bash
+python analyzer.py http://example.com
+```
+
+The report displays DNS and HTTP information, followed by:
+
+```text
+[TLS]
+     Not applicable (non-HTTPS URL)
+```
+
+## Security Notes
+
+- Only analyze systems and URLs that you own or have permission to test.
+- The `--insecure` option disables certificate verification and hostname verification. Use it only for trusted testing environments.
+- Response headers are printed directly to the terminal. Avoid using this tool where sensitive header values may be exposed to other users.
+- The tool follows HTTP redirects automatically.
+- The program performs network connections to the supplied target, so user input should be treated as an external destination.
+- The code uses a fixed User-Agent value and does not provide authentication support.
+- The command-line help contains a typo: `--insecure` says “TLC” instead of “TLS”.
+- The `User-Agent` request header is written as `User-Agents`; this may prevent it from being recognized as the standard HTTP `User-Agent` header.
+
+## Limitations
+
+- The program only performs an HTTP GET request.
+- It does not support POST data, custom headers, cookies, authentication, or proxy settings.
+- It follows redirects automatically and does not provide an option to disable redirects.
+- The redirect output is only printed when more than one URL is present in the redirect chain.
+- It does not inspect DNS record types such as MX, TXT, or CNAME.
+- It does not validate whether the resolved IP addresses match expected infrastructure.
+- It does not perform port scanning.
+- It does not save results to JSON, CSV, or another file format.
+- It does not retry failed requests.
+- It does not handle every possible certificate parsing or TLS error.
+- The certificate expiry field is named `dats_until_expiry`; the name should be corrected to `days_until_expiry`.
+- HTTP response content is fully loaded into memory to calculate its size.
+- The exit status reports HTTP errors, but DNS and TLS errors do not independently change the final exit code.
+
+## Future Improvements
+
+- Correct the `User-Agent` header name.
+- Rename `dats_until_expiry` to `days_until_expiry`.
+- Add a `requirements.txt` file.
+- Add JSON and CSV output formats.
+- Add options for custom headers, proxy support, and redirect control.
+- Add retry handling for temporary network failures.
+- Improve command-line validation for invalid URLs.
+- Return non-zero exit codes for DNS and TLS failures.
+- Add tests for DNS, HTTP, redirect, and certificate handling.
+- Add structured logging instead of printing all results directly.
+- Add support for selecting the HTTP method.
+- Avoid downloading the complete response when only the content length is needed.
+
+## License
+
+No license specified.
