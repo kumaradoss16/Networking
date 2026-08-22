@@ -1,0 +1,41 @@
+------------------------------------------------------------
+HTTP REQUEST ANALYZER = https://devspirehub.com/
+
+[DNS]
+    Hostname     : devspirehub.com
+    IP Addresses : 172.67.214.217, 104.21.16.163
+    Resolve time : 4.08 ms
+
+[HTTP]
+    Status        : 200 OK
+    Response time : 587.29 ms
+    Content size  : 143161 bytes
+     Headers         :
+    Date: Sat, 22 Aug 2026 09:07:24 GMT
+    Content-Type: text/html; charset=utf-8
+    Transfer-Encoding: chunked
+    Connection: keep-alive
+    x-content-type-options: nosniff
+    Report-To: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=LqQnvLQVn2T4iOcjQS%2FtqcwQssz3C83FgkKYuU1AYi4fukqyVaZ1XabV1tD4QQs7Cg2WqTfik7YNWMWLgO88RHBkALf%2BINnCkyJKZOp9n4GVnLQV9C6acZbOJKdgP679uTU%3D"}]}
+    Nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+    Access-Control-Allow-Origin: *
+    Cache-Control: public, max-age=0, must-revalidate
+    Link: <https://fonts.googleapis.com>; rel="preconnect", <https://challenges.cloudflare.com>; rel="preconnect"
+    referrer-policy: strict-origin-when-cross-origin
+    vary: accept-encoding
+    Server: cloudflare
+    Strict-Transport-Security: max-age=0; includeSubDomains; preload
+    cf-cache-status: DYNAMIC
+    Content-Encoding: gzip
+    CF-RAY: a2f0ba20cadedaa5-SIN
+    alt-svc: h3=":443"; ma=86400
+
+[TLS]
+    Protocol: TLSv1.3
+    Cipher suite: TLS_AES_256_GCM_SHA384
+    Subject: CN=devspirehub.com
+    Issuer: CN=WE1,O=Google Trust Services,C=US
+    Valid from: Jul 09 13:02:40 2026 UTC
+    Valid until: Oct 07 14:02:33 2026 UTC
+    Days to expiry: 46
+------------------------------------------------------------
