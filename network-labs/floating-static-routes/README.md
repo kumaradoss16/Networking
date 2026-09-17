@@ -27,10 +27,9 @@ A Cisco Packet Tracer lab demonstrating floating static routes for network redun
 
 ## Files in This Folder
 
-- `initial-config.md` - baseline hostname/interface setup for all devices
-- `floating-static-routes.md` - primary + backup route configuration
-- `verification.md` - `show` commands and failover test steps
-- Packet Tracer topology file (`.pkt`)
+- `initial-config/` - starting configs for all devices before any routing is added
+- `floating-static-routes/` - final configs with primary + floating routes applied
+- `topology.pkt` - Packet Tracer file for the lab
 
 ## Quick Test
 
