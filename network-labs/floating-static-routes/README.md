@@ -8,7 +8,7 @@ A Cisco Packet Tracer lab demonstrating floating static routes for network redun
 - **R2** - connects LAN 10.0.2.0/24 (SW2, SRV1) to the network core
 - **Direct link** - R1 ↔ R2 via 10.0.0.0/30 (primary path)
 - **Transit path** - R1 → SPR1 → SPR2 → R2 via the ISPA cloud (backup path)
-- **ISPER1 / ISPER2** - optional external routers simulating internet uplinks
+- **ISPBR1 / ISPBR2** - optional external routers simulating internet uplinks
 
 ## What This Lab Covers
 
