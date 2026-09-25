@@ -130,3 +130,32 @@ enable secret Cisc0EnablePa55
 - Always set a strong `enable secret`.
 - Always protect both console and VTY lines with passwords (or better, local usernames + AAA).
 - Prefer SSH only on VTY lines (`transport input ssh`) and disable Telnet.
+
+  ---
+  **Purpose of the numbers in the commands**
+
+### `line console 0`
+- Configures the **console line**.
+- A Cisco device has only **one physical console port**.
+- The number `0` simply identifies that single console line.
+- You always write it as `line console 0` (there is no `line console 1`).
+
+### `line vty 0 4`
+- Configures a **range of Virtual Terminal (VTY) lines**.
+- VTY lines are the logical “ports” used for remote access (Telnet/SSH).
+- The numbers `0 4` mean **lines 0 through 4** → a total of **5 simultaneous remote sessions**.
+
+| Command          | What it configures              | How many sessions |
+|------------------|---------------------------------|-------------------|
+| `line console 0` | Physical console port           | 1                 |
+| `line vty 0 4`   | First 5 VTY lines (0,1,2,3,4)  | 5                 |
+| `line vty 0 15`  | First 16 VTY lines (common on many switches/routers) | 16          |
+
+### Why the range matters
+- Each VTY line supports **one remote connection**.
+- If you only configure `line vty 0 4`, a maximum of 5 people can be logged in remotely at the same time.
+- If a 6th person tries to connect, they get a “connection refused” or “maximum number of connections” message (unless higher VTY lines are also configured).
+
+**Summary**
+- `0` on the console = the one physical console port.
+- `0 4` on VTY = lines 0 to 4 (five remote sessions).
