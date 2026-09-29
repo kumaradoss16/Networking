@@ -1,4 +1,4 @@
-# DHCP Lab — Cisco IOS DHCP Server and Client Configuration
+# DHCP Lab - Cisco IOS DHCP Server and Client Configuration
 
 ## Overview
 
@@ -397,7 +397,7 @@ During the initial DHCP process, the client may not yet have a valid source IP a
 
 After configuring the DHCP server and client, verify the configuration from both routers.
 
-## R2 — Verify DHCP Bindings
+## R2 - Verify DHCP Bindings
 
 ```cisco
 R2# show ip dhcp binding
@@ -418,7 +418,7 @@ The important information is the dynamically allocated IPv4 address.
 
 ---
 
-## R2 — Verify DHCP Pool
+## R2 - Verify DHCP Pool
 
 ```cisco
 R2# show ip dhcp pool
@@ -437,7 +437,7 @@ Useful information includes:
 
 ---
 
-## R2 — Verify DHCP Configuration
+## R2 - Verify DHCP Configuration
 
 ```cisco
 R2# show running-config | section dhcp
@@ -457,7 +457,7 @@ ip dhcp pool ...
 
 ---
 
-# R1 — Verify DHCP Client Address
+# R1 - Verify DHCP Client Address
 
 On R1:
 
@@ -896,7 +896,7 @@ After completing this lab, you should be able to explain and demonstrate:
 
 The Packet Tracer implementation is available here:
 
-[dhcp.pkt — Packet Tracer Lab](https://github.com/kumaradoss16/Networking/blob/main/network-labs/dhcp/dhcp.pkt?utm_source=chatgpt.com)
+[dhcp.pkt - Packet Tracer Lab](https://github.com/kumaradoss16/Networking/blob/main/network-labs/dhcp/dhcp.pkt?utm_source=chatgpt.com)
 
 Topology diagram:
 
