@@ -6,13 +6,13 @@ This lab demonstrates the configuration of a **Voice VLAN** on a Cisco switch to
 
 The design uses:
 
-* Cisco switch — Layer 2 access switching
-* Cisco router — Inter-VLAN routing using Router-on-a-Stick
-* Data VLAN — User/data traffic
-* Voice VLAN — IP phone traffic
-* DHCP — Dynamic IP address assignment
-* Cisco CME — Basic IP telephony service
-* Cisco Packet Tracer — Lab simulation
+* Cisco switch - Layer 2 access switching
+* Cisco router - Inter-VLAN routing using Router-on-a-Stick
+* Data VLAN - User/data traffic
+* Voice VLAN - IP phone traffic
+* DHCP - Dynamic IP address assignment
+* Cisco CME - Basic IP telephony service
+* Cisco Packet Tracer - Lab simulation
 
 The lab files are available in the repository:
 
@@ -506,7 +506,7 @@ This verifies that the phone can communicate with the CME service.
 
 A successful Voice VLAN implementation should be tested in stages.
 
-### Test 1 — VLAN
+### Test 1 - VLAN
 
 ```text
 show vlan brief
@@ -514,7 +514,7 @@ show vlan brief
 
 Confirm that the VLANs exist.
 
-### Test 2 — Switch Port
+### Test 2 - Switch Port
 
 ```text
 show interfaces fa0/1 switchport
@@ -527,7 +527,7 @@ Access VLAN → Data VLAN
 Voice VLAN  → Voice VLAN
 ```
 
-### Test 3 — Trunk
+### Test 3 - Trunk
 
 ```text
 show interfaces trunk
@@ -535,17 +535,17 @@ show interfaces trunk
 
 Confirm that the required VLANs are being transported.
 
-### Test 4 — IP Addressing
+### Test 4 - IP Addressing
 
 Check the IP phone and PC addresses.
 
 The devices should receive addresses from their respective networks.
 
-### Test 5 — Gateway Connectivity
+### Test 5 - Gateway Connectivity
 
 Ping the appropriate default gateway.
 
-### Test 6 — Phone Registration
+### Test 6 - Phone Registration
 
 ```text
 show ephone registered
