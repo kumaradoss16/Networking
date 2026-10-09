@@ -8,8 +8,6 @@
 
 [Networking — lab-dhcp-snooping](https://github.com/kumaradoss16/Networking/tree/main/network-labs/lab-dhcp-snooping)
 
-> **Source accuracy note:** The files inside the referenced GitHub directory could not be retrieved when this document was prepared. This document therefore describes standard Cisco IOS DHCP Snooping behavior and uses placeholders where the exact topology, interface numbers, VLAN IDs, device names, and addressing plan must be confirmed against the original lab files. It is not a verified transcription of the repository's device configurations.
-
 ## 1. Lab overview
 
 ### Objective
