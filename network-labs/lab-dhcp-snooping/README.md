@@ -1,4 +1,4 @@
-# DHCP Snooping Lab Configuration — Technical Documentation
+# DHCP Snooping Lab Configuration - Technical Documentation
 
 > **Platform:** Cisco IOS / Cisco Packet Tracer  
 > **Topic:** Layer 2 Network Security  
@@ -6,7 +6,7 @@
 
 ## Reference repository
 
-[Networking — lab-dhcp-snooping](https://github.com/kumaradoss16/Networking/tree/main/network-labs/lab-dhcp-snooping)
+[Networking - lab-dhcp-snooping](https://github.com/kumaradoss16/Networking/tree/main/network-labs/lab-dhcp-snooping)
 
 ## 1. Lab overview
 
@@ -67,7 +67,7 @@ With DHCP Snooping enabled:
 
 The following is a standard Cisco IOS configuration template, not a verified transcription of the repository's device configurations.
 
-### Step 1 — Inspect the existing switch configuration
+### Step 1 - Inspect the existing switch configuration
 
 Run these commands on each relevant switch before making changes.
 
@@ -91,7 +91,7 @@ show ip dhcp snooping
 
 **Why this step matters:** If the wrong uplink is trusted, legitimate DHCP responses may be blocked. If a client-facing interface is trusted, a rogue DHCP server connected there may bypass the intended protection.
 
-### Step 2 — Configure DHCP service
+### Step 2 - Configure DHCP service
 
 If the original lab uses a Cisco router as its DHCP server, the following illustrates a common configuration pattern. Use it only if it matches the existing topology and addressing plan.
 
@@ -138,7 +138,7 @@ show ip interface brief
 
 If the lab uses a dedicated server in Packet Tracer, configure its DHCP service through the server's interface instead of applying router DHCP-pool commands.
 
-### Step 3 — Enable DHCP Snooping globally
+### Step 3 - Enable DHCP Snooping globally
 
 On each switch that must inspect DHCP traffic:
 
@@ -152,7 +152,7 @@ ip dhcp snooping
 
 **How it works:** The switch can now apply DHCP Snooping policies to VLANs for which the feature is enabled. Enabling it globally alone does not activate inspection for every VLAN.
 
-### Step 4 — Enable DHCP Snooping on the required VLAN
+### Step 4 - Enable DHCP Snooping on the required VLAN
 
 ```cisco
 ip dhcp snooping vlan <VLAN-ID>
@@ -166,7 +166,7 @@ Replace `<VLAN-ID>` with the VLAN used by the original lab.
 
 For multiple VLANs, IOS platforms may support a comma-separated list or a range, depending on the command syntax and software version.
 
-### Step 5 — Configure the legitimate DHCP path as trusted
+### Step 5 - Configure the legitimate DHCP path as trusted
 
 Identify the interface through which legitimate DHCP server responses enter the switch.
 
@@ -188,7 +188,7 @@ The correct interface depends on where the DHCP server is connected:
 
 Do not blindly trust every trunk or uplink. A trunk can also carry traffic from untrusted access networks.
 
-### Step 6 — Keep client-facing ports untrusted
+### Step 6 - Keep client-facing ports untrusted
 
 Client-facing interfaces should remain untrusted by default.
 
@@ -214,7 +214,7 @@ exit
 
 This is particularly important when converting an existing configuration to a secure design.
 
-### Step 7 — Optional: Configure DHCP rate limiting
+### Step 7 - Optional: Configure DHCP rate limiting
 
 On supported switches, a per-interface DHCP packet rate limit can reduce DHCP flooding from untrusted ports.
 
@@ -231,7 +231,7 @@ exit
 
 **Operational warning:** Depending on the platform, exceeding the configured threshold can trigger violation handling, including shutting down the interface. Confirm the device's behavior before enabling this feature on production ports.
 
-### Step 8 — Save the configuration
+### Step 8 - Save the configuration
 
 ```cisco
 end
