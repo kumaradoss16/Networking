@@ -16,6 +16,9 @@ Configure DHCP Snooping on Cisco switches to prevent unauthorized DHCP servers f
 
 DHCP Snooping examines DHCP messages passing through a switch and distinguishes between **trusted interfaces**, which are permitted to receive DHCP server responses, and **untrusted interfaces**, where unauthorized server responses are blocked.
 
+<img width="791" height="261" alt="image" src="https://github.com/user-attachments/assets/29116359-b5d4-4368-af46-ca633b8da696" />
+
+
 ### Learning outcomes
 
 - Understand the DHCP Discover, Offer, Request, and Acknowledgment process.
@@ -42,6 +45,9 @@ The exact VLAN numbers, interface names, IP addresses, device names, and DHCP se
 DHCP Snooping operates at Layer 2 and filters DHCP messages based on the interface through which they arrive.
 
 The normal DHCP allocation process is:
+
+<img width="791" height="433" alt="image" src="https://github.com/user-attachments/assets/655f33fb-ffa5-4ad9-9ac5-7a16c95a282e" />
+
 
 1. **DHCP Discover:** The client broadcasts a request to find a DHCP server.
 2. **DHCP Offer:** The legitimate server offers an IP address and configuration.
